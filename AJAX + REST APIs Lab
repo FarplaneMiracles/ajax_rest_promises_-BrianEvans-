@@ -5,11 +5,14 @@ HTML:
 <head>
 	<title>Challenge</title>
 	<link rel="stylesheet" type="text/css" href="Challenge.css">
+	<link href="https://fonts.googleapis.com/css2?family=Modak&display=swap" rel="stylesheet">
 </head>
 <body>
 	<div class="parent">
 		<div class="center">
 			<button id="getPosts">GET</button>
+			<button id="getID12">GET ID 12</button>
+			<button id="getID12COMMENTS">12's Comments</button>
 			<button id="getComments">GET SPECIFIC</button>
 			<button id="createPosts">CREATE</button>
 			<button id="updatePosts">UPDATE</button>
@@ -30,12 +33,17 @@ CSS:
 
 
 body {
-	background-color: rgba(24, 22, 58, .7);
+	background: rgb(9,121,108);
+background: linear-gradient(90deg, rgba(9,121,108,1) 28%, rgba(2,0,36,1) 28%, rgba(0,212,255,1) 100%);
 }
+
 button{
+	color: 	#147a80;
+	margin: 10px;
 	font-size: 20px;
+	font-family: 'Modak', cursive;
 	text-align: center;
-	box-shadow: 5px 5px 8px blue, 15px 10px 8px red, 15px 15px 8px green; 
+	box-shadow: 3px 3px 6px blue, 5px 7px 7px red, 8px 9px 8px green; 
 }
 
 .parent{
@@ -46,6 +54,8 @@ button{
 	display: inline-block;
 }
 
+
+
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 JAVASCRIPT:
@@ -55,6 +65,19 @@ const ajaxCall = () => {
 	fetch("https://jsonplaceholder.typicode.com/todos")
 	.then(response => response.json())
 	.then(json = console.log(json))
+}
+
+const ajaxCall12 = () => {
+	// GET to retrieve all posts
+	fetch("https://jsonplaceholder.typicode.com/todos12")
+	.then(response => response.json())
+	.then(json = console.log(json))
+}
+
+const ajaxCallPost12Comment = () => {
+    fetch("https://jsonplaceholder.typicode.com/posts?userId=12")
+    .then(response => response.json())
+    .then(json => console.log(json))
 }
 
 const ajaxCallSpecific = () => {
@@ -113,7 +136,7 @@ const render = () => {
       var all = "";
       for (var i = 0; i < data.length; i++) {
         console.log(data[i]);
-        all += "<p>" + "Name: " + data[i].name + "</p>";
+        all += "<p>" + "SUCCESS " + data[i].name + "</p>";
         console.log(all);
       }
     });
@@ -131,9 +154,17 @@ const testNumb = (num) => new Promise ((resolve, reject) => {
   }
 })
 
+testNumb(2)
+    .then(function(value) {
+  console.log(value)
+})
+.catch(function(error) {
+  console.log(error)
+})
 
 
-let animals = ['monkey', 'fish', 'bird', 'tiger', 3]
+
+let animals = ['monkey', 'fish', 'bird', 'tiger']
 const makeAllCapz = (words) => 
   new Promise ((resolve, reject) => {
     if (words.every(word => typeof word === 'string')){
@@ -141,8 +172,14 @@ const makeAllCapz = (words) =>
     } else {
       reject(Error('this method requires type STRING'))
     }
+
+    makeAllCaps(animals)
+  .then(words => sortWords(words))
+  .then(result => console.log(result))
+  .catch(error => console.log(error))
   })
 
+ 
 const sortWords = (words) => {
   return words.sort((a, b) => {
     if (a > b){
@@ -155,6 +192,8 @@ const sortWords = (words) => {
 
 
 let getPosts = document.getElementById("getPosts");
+let get12 = document.getElementById("getID12");
+let getID12COMMENTS = document.getElementById("getID12COMMENTS");
 let getComments = document.getElementById("getComments");
 let createPosts = document.getElementById("createPosts");
 let updatePosts = document.getElementById("updatePosts");
@@ -171,3 +210,5 @@ deletePosts.addEventListener("click", ajaxDeleteRequest);
 showPosts.addEventListener("click", render);
 testNum.addEventListener("click", testNumb);
 makeAllCaps.addEventListener("click", makeAllCapz);
+get12.addEventListener("click", ajaxCall12);
+getID12COMMENTS.addEventListener("click", ajaxCallPost12Comment);
